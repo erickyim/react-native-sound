@@ -203,6 +203,13 @@ RCT_EXPORT_METHOD(prepare:(NSString*)fileName
               error:&error];
   }
 
+  // fix player initilize failed sometimes
+  if (!player) {
+    fileNameUrl = [NSURL fileURLWithPath:fileName];
+    NSData* data = [NSData dataWithContentsOfURL:fileNameUrl];
+    player = [[AVAudioPlayer alloc] initWithData:data error:&error];
+  }
+
   if (player) {
     player.delegate = self;
     player.enableRate = YES;
